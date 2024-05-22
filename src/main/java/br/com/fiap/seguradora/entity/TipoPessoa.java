@@ -1,6 +1,15 @@
 package br.com.fiap.seguradora.entity;
 
-public enum TipoPessoa {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    PF, PJ
+@Getter
+@AllArgsConstructor
+public enum TipoPessoa {
+    PF, PJ;
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }
