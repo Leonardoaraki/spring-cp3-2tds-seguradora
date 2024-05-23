@@ -6,7 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Year;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import java.time.LocalDate;
+import java.time.Year;
 
 
 @Data
@@ -15,11 +20,8 @@ import java.time.LocalDate;
 @Builder
 
 @Entity
-@Table(name = "TB_PESSOA",
-        //UK para garantir que não se tenha mais de uma pessoa com o mesmo e-mail.
-        uniqueConstraints = {
-                @UniqueConstraint(name = "UK_EMAIL_PESSOA", columnNames = "EMAIL_PESSOA")
-        }
+@Table(name = "TB_PESSOA"
+
 )
 public class Pessoa {
 
@@ -41,8 +43,73 @@ public class Pessoa {
     @Column(name = "DT_NASCIMENTO")
     private LocalDate nascimento;
 
+    @Column(name = "ANO_NASCIMENTO")
+    private Year anoDeNascimento;
+
+
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_PESSOA", nullable = false)
     private TipoPessoa tipo;
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "DOCUMENTO",
+            referencedColumnName = "ID_DOCUMENTO",
+            foreignKey = @ForeignKey(
+                    name = "FK_DOCUMENTO_PESSOA"
+            )
+    )
+    private Documento documento;
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_PESSOA_ENDERECO",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "PESSOA",
+                            referencedColumnName = "ID_PESSOA",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_PESSOA_ENDERECO"
+                            )
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "ENDERECO",
+                            referencedColumnName = "ID_ENDERECO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_ENDERECO_PESSOA"
+                            )
+                    )
+            }
+    )
+    private Set<Endereco> endereco = new LinkedHashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_PESSOA_FOTO",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "PESSOA",
+                            referencedColumnName = "ID_PESSOA",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_PESSOA_FOTO"
+                            )
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "FOTO",
+                            referencedColumnName = "ID_FOTO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_FOTO_PESSOA"
+                            )
+                    )
+            }
+    )
+    private Set<Foto> fotos = new LinkedHashSet<>();
+
 
 }

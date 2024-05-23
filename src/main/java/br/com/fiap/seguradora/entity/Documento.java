@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,4 +32,29 @@ public class Documento {
 
     @Column(name = "NR_DOCUMENTO")
     private String numero;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_DOCUMENTO_FOTO",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "DOCUMENTO",
+                            referencedColumnName = "ID_DOCUMENTO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_DOCUMENTO_FOTO"
+                            )
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "FOTO",
+                            referencedColumnName = "ID_FOTO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_FOTO_DOCUMENTO"
+                            )
+                    )
+            }
+    )
+    private Set<Foto> fotos = new LinkedHashSet<>();
+
 }
