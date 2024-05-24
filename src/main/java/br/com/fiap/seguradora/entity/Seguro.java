@@ -33,4 +33,31 @@ public class Seguro {
     @Column(name = "VLR_SEGURO")
     private Double valor;
 
+    @Column(name = "DT_INICIO")
+    private LocalDate inicio;
+
+    @Column(name = "DT_FIM")
+    private LocalDate fim;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "PESSOA",
+            referencedColumnName = "ID_PESSOA",
+            foreignKey = @ForeignKey(
+                    name = "FK_SEGURO_PESSOA"
+            )
+    )
+    private Seguro seguro;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "ASSEGURAVEL",
+            referencedColumnName = "ID_ASSEGURAVEL",
+            foreignKey = @ForeignKey(
+                    name = "FK_SEGURO_ASSEGURAVEL"
+            )
+    )
+    private Asseguravel asseguravel;
+
+
 }

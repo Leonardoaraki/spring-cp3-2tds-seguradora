@@ -40,17 +40,6 @@ public class Pessoa {
     @Column(name = "EMAIL_PESSOA")
     private String email;
 
-    @Column(name = "DT_NASCIMENTO")
-    private LocalDate nascimento;
-
-    @Column(name = "ANO_NASCIMENTO")
-    private Year anoDeNascimento;
-
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TP_PESSOA", nullable = false)
-    private TipoPessoa tipo;
-
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(

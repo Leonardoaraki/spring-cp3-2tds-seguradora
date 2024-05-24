@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Year;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 @Data
@@ -38,5 +41,33 @@ public class Veiculo {
 
     @Column(name = "CHASSI_VEICULO")
     private String chassi;
+
+    @Column(name = "ANO_VEICULO")
+    private Year ano;
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_VEICULO_FOTO",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "VEICULO",
+                            referencedColumnName = "ID_VEICULO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_VEICULO_FOTO"
+                            )
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "FOTO",
+                            referencedColumnName = "ID_FOTO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_FOTO_VEICULO"
+                            )
+                    )
+            }
+    )
+    private Set<Foto> fotos = new LinkedHashSet<>();
 
 }

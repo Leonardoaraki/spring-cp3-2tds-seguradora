@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -24,4 +25,7 @@ public class Asseguravel {
     @SequenceGenerator(name = "SQ_ASSEGURAVEL", sequenceName = "SQ_ASSEGURAVEL", allocationSize = 1)
     @Column(name = "ID_ASSEGURAVEL")
     private Long id;
+
+    @Column(name = "VLR_ASSEGURAVEL")
+    private BigDecimal valor;
 }
